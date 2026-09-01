@@ -1,98 +1,117 @@
-import * as Device from 'expo-device';
-import { Platform, StyleSheet } from 'react-native';
-import { SafeAreaView } from 'react-native-safe-area-context';
+import { View, Text, Image, ScrollView } from 'react-native';
+import styled from 'styled-components/native';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import { WebBadge } from '@/components/web-badge';
-import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
+import { TurnoCard } from '@/components/TurnoCard';
+import { turnos } from '@/data/turnos';
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+const bannerImage =
+  'https://images.unsplash.com/photo-1556745757-8d76bdb6984b?auto=format&fit=crop&w=1200&q=80';
+const tagline = 'Encontr\u00e1 el horario que mejor se adapte a vos';
 
 export default function HomeScreen() {
   return (
-    <ThemedView style={styles.container}>
-      <SafeAreaView style={styles.safeArea}>
-        <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+    <Screen>
+      <Header>
+        <HeaderInner>
+          <AppName>TurnoApp</AppName>
+          <Subtitle>{tagline}</Subtitle>
+        </HeaderInner>
+      </Header>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+      <Content showsVerticalScrollIndicator={false}>
+        <Intro>
+          <BannerImage source={{ uri: bannerImage }} resizeMode="cover" />
+          <SectionTitle>Turnos disponibles</SectionTitle>
+          <Description>
+            Consulta los horarios de atenci\u00f3n para cada servicio de la cooperativa. Esta
+            versi\u00f3n usa datos est\u00e1ticos para presentar la estructura inicial de la
+            aplicaci\u00f3n.
+          </Description>
+        </Intro>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
-        </ThemedView>
-
-        {Platform.OS === 'web' && <WebBadge />}
-      </SafeAreaView>
-    </ThemedView>
+        <CardsList>
+          {turnos.map((turno) => (
+            <TurnoCard
+              key={turno.id}
+              servicio={turno.servicio}
+              sector={turno.sector}
+              fecha={turno.fecha}
+              hora={turno.hora}
+              estado={turno.estado}
+              imagen={turno.imagen}
+            />
+          ))}
+        </CardsList>
+      </Content>
+    </Screen>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    flexDirection: 'row',
-  },
-  safeArea: {
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    alignItems: 'center',
-    gap: Spacing.three,
-    paddingBottom: BottomTabInset + Spacing.three,
-    maxWidth: MaxContentWidth,
-  },
-  heroSection: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    flex: 1,
-    paddingHorizontal: Spacing.four,
-    gap: Spacing.four,
-  },
-  title: {
-    textAlign: 'center',
-  },
-  code: {
-    textTransform: 'uppercase',
-  },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
-    borderRadius: Spacing.four,
-  },
-});
+const Screen = styled(View)`
+  flex: 1;
+  background-color: #f3f6f9;
+`;
+
+const Header = styled(View)`
+  background-color: #0f2f4a;
+  padding: 52px 20px 28px;
+`;
+
+const HeaderInner = styled(View)`
+  width: 100%;
+  max-width: 720px;
+  align-self: center;
+`;
+
+const AppName = styled(Text)`
+  color: #ffffff;
+  font-size: 32px;
+  font-weight: 800;
+`;
+
+const Subtitle = styled(Text)`
+  color: #c8ecff;
+  font-size: 16px;
+  line-height: 24px;
+  margin-top: 8px;
+`;
+
+const Content = styled(ScrollView)`
+  flex: 1;
+`;
+
+const Intro = styled(View)`
+  width: 100%;
+  max-width: 720px;
+  align-self: center;
+  padding: 20px 20px 8px;
+`;
+
+const BannerImage = styled(Image)`
+  width: 100%;
+  height: 170px;
+  border-radius: 18px;
+  background-color: #d7eaf5;
+`;
+
+const SectionTitle = styled(Text)`
+  color: #17324a;
+  font-size: 24px;
+  font-weight: 800;
+  margin-top: 24px;
+`;
+
+const Description = styled(Text)`
+  color: #526576;
+  font-size: 15px;
+  line-height: 22px;
+  margin-top: 8px;
+`;
+
+const CardsList = styled(View)`
+  width: 100%;
+  max-width: 720px;
+  align-self: center;
+  gap: 14px;
+  padding: 14px 20px 32px;
+`;

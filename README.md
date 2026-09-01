@@ -2,7 +2,6 @@
 
 TurnoApp es una aplicación móvil desarrollada con React Native y Expo para mostrar turnos disponibles de distintos servicios.
 
-Esta primera versión es solamente visual. Usa datos estáticos escritos dentro del proyecto y no incluye base de datos, API, inicio de sesión, navegación, formularios ni reserva o cancelación real de turnos.
 
 ## Objetivo
 
@@ -10,7 +9,7 @@ Presentar una pantalla principal profesional y sencilla donde se puedan consulta
 
 ## Integrantes
 
-- Nombre y apellido:
+- Nombre y apellido: Fernandez Joaquin
 
 ## Tecnologías utilizadas
 
@@ -113,7 +112,4 @@ npm run web
 npm run lint
 ```
 
-Para aprender más sobre Expo:
 
-- [Expo documentation](https://docs.expo.dev/)
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/)
