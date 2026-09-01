@@ -1,56 +1,119 @@
-# Welcome to your Expo app 👋
+# TurnoApp
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+TurnoApp es una aplicación móvil desarrollada con React Native y Expo para mostrar turnos disponibles de distintos servicios.
 
-## Get started
+Esta primera versión es solamente visual. Usa datos estáticos escritos dentro del proyecto y no incluye base de datos, API, inicio de sesión, navegación, formularios ni reserva o cancelación real de turnos.
 
-1. Install dependencies
+## Objetivo
 
-   ```bash
-   npm install
-   ```
+Presentar una pantalla principal profesional y sencilla donde se puedan consultar turnos disponibles para servicios como atención al cliente, consultas administrativas, reclamos, servicio técnico y pagos.
 
-2. Start the app
+## Integrantes
 
-   ```bash
-   npx expo start
-   ```
+- Nombre y apellido:
 
-In the output, you'll find options to open the app in a
+## Tecnologías utilizadas
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+- React Native
+- Expo
+- TypeScript
+- Styled Components
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Instalación de dependencias
 
 ```bash
-npm run reset-project
+npm install
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+El proyecto incluye `styled-components` como dependencia para definir los estilos de la interfaz.
 
-### Other setup steps
+## Ejecutar el proyecto
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+```bash
+npx expo start
+```
 
-## Learn more
+En la salida de Expo se pueden elegir las opciones para abrir la app en Android, iOS, web o Expo Go.
 
-To learn more about developing your project with Expo, look at the following resources:
+## Datos estáticos
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+Los turnos se encuentran en `src/data/turnos.ts`.
 
-## Join the community
+Cada turno tiene:
 
-Join our community of developers creating universal apps.
+- `id`
+- `servicio`
+- `sector`
+- `fecha`
+- `hora`
+- `estado`
+- `imagen`
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Los datos se escriben directamente en el proyecto y no se obtienen desde una API ni desde una base de datos.
+
+## Componente reutilizable TurnoCard
+
+El componente `TurnoCard` está en `src/components/TurnoCard.tsx`.
+
+Recibe por props los datos de cada turno:
+
+- `servicio`
+- `sector`
+- `fecha`
+- `hora`
+- `estado`
+- `imagen`
+
+El componente muestra la imagen del servicio, el nombre, el sector, la fecha, el horario y el estado. El color del estado cambia según su valor:
+
+- Verde para `Disponible`
+- Naranja para `Pocos lugares`
+- Gris para `No disponible`
+
+## Comunicación mediante props
+
+La pantalla principal en `src/app/index.tsx` funciona como componente padre. Recorre el arreglo de turnos con `map()` y crea un `TurnoCard` por cada elemento, enviando los datos mediante props.
+
+## Features completadas
+
+- Pantalla principal
+- Uso de `View`, `Text`, `Image` y `ScrollView`
+- Datos estáticos
+- Listado de turnos
+- Componente reutilizable `TurnoCard`
+- Comunicación mediante props
+- Diseño con Styled Components
+
+## Features pendientes
+
+- Solicitar turno
+- Cancelar turno
+- Consultar mis turnos
+- Inicio de sesión
+- Notificaciones
+- Conexión con API
+- Base de datos
+
+## Información de Expo
+
+Este proyecto fue creado con Expo y usa Expo Router como punto de entrada (`expo-router/entry`).
+
+La estructura generada por Expo se conserva. Para iniciar la app se utiliza:
+
+```bash
+npx expo start
+```
+
+Otros comandos disponibles:
+
+```bash
+npm run android
+npm run ios
+npm run web
+npm run lint
+```
+
+Para aprender más sobre Expo:
+
+- [Expo documentation](https://docs.expo.dev/)
+- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/)
