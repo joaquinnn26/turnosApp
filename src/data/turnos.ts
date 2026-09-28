@@ -5,17 +5,35 @@ export type Turno = {
   servicio: string;
   sector: string;
   fecha: string;
+  inicio: number;
   hora: string;
   estado: EstadoTurno;
   imagen: string;
 };
 
+function fechaDeEjemplo(dias: number, hora: string) {
+  const fecha = new Date();
+  fecha.setDate(fecha.getDate() + dias);
+  const [horas, minutos] = hora.split(':').map(Number);
+  fecha.setHours(horas, minutos, 0, 0);
+  return {
+    inicio: fecha.getTime(),
+    fecha: fecha.toLocaleDateString('es-AR', {
+      day: 'numeric', month: 'long', year: 'numeric',
+    }),
+  };
+}
+
+export function getEstadoTurno(turno: Turno, ahora = Date.now()): EstadoTurno {
+  return turno.inicio <= ahora ? 'No disponible' : turno.estado;
+}
+
 export const turnos: Turno[] = [
   {
     id: 1,
-    servicio: 'Atenci\u00f3n al cliente',
+    servicio: 'Atención al cliente',
     sector: 'Mesa de informes',
-    fecha: 'Lunes 7 de septiembre',
+    ...fechaDeEjemplo(1, '09:00'),
     hora: '09:00',
     estado: 'Disponible',
     imagen:
@@ -24,8 +42,8 @@ export const turnos: Turno[] = [
   {
     id: 2,
     servicio: 'Consultas administrativas',
-    sector: 'Administraci\u00f3n',
-    fecha: 'Lunes 7 de septiembre',
+    sector: 'Administración',
+    ...fechaDeEjemplo(2, '10:30'),
     hora: '10:30',
     estado: 'Pocos lugares',
     imagen:
@@ -34,8 +52,8 @@ export const turnos: Turno[] = [
   {
     id: 3,
     servicio: 'Reclamos',
-    sector: 'Gesti\u00f3n de solicitudes',
-    fecha: 'Martes 8 de septiembre',
+    sector: 'Gestión de solicitudes',
+    ...fechaDeEjemplo(3, '11:15'),
     hora: '11:15',
     estado: 'Disponible',
     imagen:
@@ -43,9 +61,9 @@ export const turnos: Turno[] = [
   },
   {
     id: 4,
-    servicio: 'Servicio t\u00e9cnico',
+    servicio: 'Servicio técnico',
     sector: 'Soporte operativo',
-    fecha: 'Miercoles 9 de septiembre',
+    ...fechaDeEjemplo(4, '13:00'),
     hora: '13:00',
     estado: 'No disponible',
     imagen:
@@ -53,9 +71,9 @@ export const turnos: Turno[] = [
   },
   {
     id: 5,
-    servicio: 'Pagos y facturaci\u00f3n',
+    servicio: 'Pagos y facturación',
     sector: 'Caja y cobranzas',
-    fecha: 'Jueves 10 de septiembre',
+    ...fechaDeEjemplo(5, '08:45'),
     hora: '08:45',
     estado: 'Pocos lugares',
     imagen:

@@ -1,115 +1,75 @@
-# TurnoApp
+﻿# TurnoApp
 
-TurnoApp es una aplicación móvil desarrollada con React Native y Expo para mostrar turnos disponibles de distintos servicios.
+Proyecto de React Native — Fernandez Joaquin.
 
+App para consultar turnos de la cooperativa. Usa Expo 57, Expo Router, TypeScript y Styled Components.
 
-## Objetivo
+## Funciones
 
-Presentar una pantalla principal profesional y sencilla donde se puedan consultar turnos disponibles para servicios como atención al cliente, consultas administrativas, reclamos, servicio técnico y pagos.
+- Listado con FlatList y tarjetas con servicio, sector, fecha, horario y estado.
+- Búsqueda por servicio o sector, sin distinguir tildes ni mayúsculas.
+- Filtros «Todos» y «Con disponibilidad».
+- Mensaje sin resultados y botón para restablecer los filtros.
+- Detalle con imagen y resumen de fecha y hora.
+- Formulario con validación del nombre, foco y errores junto al campo.
+- Confirmación con resumen y regreso al listado.
+- Los turnos no disponibles ofrecen elegir otro horario.
 
-## Integrantes
+La solicitud es una simulación: no crea reservas ni descuenta cupos. Se muestra un Alert en el dispositivo y una confirmación en pantalla.
 
-- Nombre y apellido: Fernandez Joaquin
-
-## Tecnologías utilizadas
-
-- React Native
-- Expo
-- TypeScript
-- Styled Components
-
-## Instalación de dependencias
+## Ejecutar
 
 ```bash
 npm install
-```
-
-El proyecto incluye `styled-components` como dependencia para definir los estilos de la interfaz.
-
-## Ejecutar el proyecto
-
-```bash
 npx expo start
 ```
 
-En la salida de Expo se pueden elegir las opciones para abrir la app en Android, iOS, web o Expo Go.
+Abrí el QR con Expo Go compatible con SDK 57, o presioná `a` para Android y `w` para web. El simulador iOS requiere macOS.
 
-## Datos estáticos
+## Archivos
 
-Los turnos se encuentran en `src/data/turnos.ts`.
+- `src/app/index.tsx`: búsqueda, filtros y listado.
+- `src/app/turno/[id].tsx`: detalle, formulario y confirmación.
+- `src/app/_layout.tsx`: navegación con Stack.
+- `src/components/TurnoCard.tsx`: tarjeta reutilizable.
+- `src/components/turno-ui.tsx`: colores y componentes compartidos.
+- `src/data/turnos.ts`: tipos y turnos de ejemplo.
 
-Cada turno tiene:
+## Datos locales
 
-- `id`
-- `servicio`
-- `sector`
-- `fecha`
-- `hora`
-- `estado`
-- `imagen`
+Las fechas se generan entre uno y cinco días después de cargar el módulo, con la hora del dispositivo. El campo `inicio` permite comprobar el vencimiento, también al solicitar.
 
-Los datos se escriben directamente en el proyecto y no se obtienen desde una API ni desde una base de datos.
+La búsqueda y el formulario usan estado local. No hay API, autenticación ni persistencia. Las imágenes de Unsplash necesitan conexión.
 
-## Componente reutilizable TurnoCard
+## Pruebas manuales
 
-El componente `TurnoCard` está en `src/components/TurnoCard.tsx`.
+1. Buscar `administracion` o `caja` y comprobar las coincidencias.
+2. Activar «Con disponibilidad»: «Servicio técnico» no debe aparecer.
+3. Buscar `zzz` y tocar «Ver todos los turnos» para restablecer el listado.
+4. Abrir una tarjeta y revisar sus datos.
+5. Solicitar sin nombre o con espacios: el campo debe recibir el foco y mostrar el error.
+6. Completar el nombre y solicitar: debe aparecer el Alert y la confirmación de prueba. El formulario deja de mostrarse para evitar repetir el envío.
+7. Abrir «Servicio técnico» desde «Todos»: debe ofrecer «Elegir otro turno», sin formulario.
+8. Volver al listado: deben conservarse la búsqueda y el filtro.
+9. Abrir `/turno/999`: debe mostrar un mensaje y permitir volver.
+10. Comprobar el formulario con teclado abierto y en una pantalla angosta.
 
-Recibe por props los datos de cada turno:
-
-- `servicio`
-- `sector`
-- `fecha`
-- `hora`
-- `estado`
-- `imagen`
-
-El componente muestra la imagen del servicio, el nombre, el sector, la fecha, el horario y el estado. El color del estado cambia según su valor:
-
-- Verde para `Disponible`
-- Naranja para `Pocos lugares`
-- Gris para `No disponible`
-
-## Comunicación mediante props
-
-La pantalla principal en `src/app/index.tsx` funciona como componente padre. Recorre el arreglo de turnos con `map()` y crea un `TurnoCard` por cada elemento, enviando los datos mediante props.
-
-## Features completadas
-
-- Pantalla principal
-- Uso de `View`, `Text`, `Image` y `ScrollView`
-- Datos estáticos
-- Listado de turnos
-- Componente reutilizable `TurnoCard`
-- Comunicación mediante props
-- Diseño con Styled Components
-
-## Features pendientes
-
-- Solicitar turno
-- Cancelar turno
-- Consultar mis turnos
-- Inicio de sesión
-- Notificaciones
-- Conexión con API
-- Base de datos
-
-## Información de Expo
-
-Este proyecto fue creado con Expo y usa Expo Router como punto de entrada (`expo-router/entry`).
-
-La estructura generada por Expo se conserva. Para iniciar la app se utiliza:
+## Verificaciones
 
 ```bash
-npx expo start
-```
-
-Otros comandos disponibles:
-
-```bash
-npm run android
-npm run ios
-npm run web
 npm run lint
+npx tsc --noEmit
+npx expo export --platform web
 ```
 
+Si una ruta nueva no aparece en los tipos, ejecutar `npx expo start` para regenerarlos. No hay un runner de tests configurado.
 
+## Pendientes
+
+- API y disponibilidad validada en el servidor.
+- Reservas reales y persistencia.
+- Mis turnos, cancelaciones y reprogramación.
+- Autenticación y perfiles.
+- Recordatorios y notificaciones.
+- Manejo de carga y errores de red.
+- Pruebas automatizadas y revisión en dispositivos.
